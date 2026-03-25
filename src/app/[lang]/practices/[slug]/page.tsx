@@ -6,7 +6,6 @@ import { getPath } from '@/lib/i18n';
 import { getEntry } from '@/lib/contentful';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import PageHero from '@/components/page-hero';
 import Breadcrumb from '@/components/breadcrumb';
 
 type Props = { params: { lang: string; slug?: string } };
@@ -53,51 +52,69 @@ export default async function PracticeDetailPage({ params }: Props) {
 
   return (
     <>
-      <PageHero>
-        <h1 className="text-3xl sm:text-4xl font-bold">{title}</h1>
-      </PageHero>
+      {/* Dark hero banner */}
+      <section className="relative bg-navy-900 grain overflow-hidden">
+        <div className="section-wide py-24 sm:py-32 flex flex-col items-center text-center">
+          <p className="text-xs tracking-[0.25em] uppercase text-gold font-body mb-4">
+            PRACTICE AREAS
+          </p>
+          <h1 className="font-display text-display-lg text-white">
+            {title}
+          </h1>
+          <div className="gold-line-center mt-6" />
+        </div>
+      </section>
 
       <Breadcrumb items={breadcrumbItems} />
 
-      <article className="max-w-4xl mx-auto px-4 lg:px-12 py-12">
-        {introduction && (
-          <section className="mb-8">
-            {introduction.split('\n').map((paragraph: string, i: number) => (
-              <p key={i} className="mb-4 leading-relaxed text-gray-700">
-                {paragraph}
-              </p>
-            ))}
-          </section>
-        )}
-
-        {casesLines.length > 0 && (
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              {dict.practice_details_page.cases_handled}
-            </h2>
-            <ul className="list-disc ml-6 space-y-2">
-              {casesLines.map((line: string, i: number) => (
-                <li key={i} className="text-gray-700">
-                  {line}
-                </li>
+      {/* Article body */}
+      <article className="bg-warm-50 section-padding">
+        <div className="section-narrow">
+          {/* Introduction */}
+          {introduction && (
+            <section className="mb-14">
+              {introduction.split('\n').map((paragraph: string, i: number) => (
+                <p key={i} className="mb-5 font-body text-navy-600/70 text-lg leading-relaxed">
+                  {paragraph}
+                </p>
               ))}
-            </ul>
-          </section>
-        )}
+            </section>
+          )}
 
-        {specializedAttorney && specializedAttorney.fields && (
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              {dict.practice_details_page.specialized_attorney}
-            </h2>
-            <Link
-              href={getPath(lang, 'attorneyProfile', specializedAttorney.fields.slug as string)}
-              className="text-primary font-medium hover:underline"
-            >
-              {specializedAttorney.fields.name as string}
-            </Link>
-          </section>
-        )}
+          {/* Cases handled */}
+          {casesLines.length > 0 && (
+            <section className="mb-14">
+              <h2 className="font-display text-display-sm text-navy-800 mb-6">
+                {dict.practice_details_page.cases_handled}
+              </h2>
+              <div className="gold-line mb-8" />
+              <ul className="space-y-3">
+                {casesLines.map((line: string, i: number) => (
+                  <li key={i} className="flex items-start gap-3 font-body text-navy-600/70 leading-relaxed">
+                    <span className="mt-2 block w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Specialized attorney */}
+          {specializedAttorney && specializedAttorney.fields && (
+            <section className="mb-14">
+              <h2 className="font-display text-display-sm text-navy-800 mb-6">
+                {dict.practice_details_page.specialized_attorney}
+              </h2>
+              <div className="gold-line mb-8" />
+              <Link
+                href={getPath(lang, 'attorneyProfile', specializedAttorney.fields.slug as string)}
+                className="font-body text-navy-800 font-medium hover:text-gold transition-colors"
+              >
+                {specializedAttorney.fields.name as string} &rarr;
+              </Link>
+            </section>
+          )}
+        </div>
       </article>
     </>
   );

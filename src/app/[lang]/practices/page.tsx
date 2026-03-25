@@ -5,7 +5,6 @@ import { buildMetadata } from '@/lib/metadata';
 import { getPath } from '@/lib/i18n';
 import { getEntries } from '@/lib/contentful';
 import Link from 'next/link';
-import PageHero from '@/components/page-hero';
 import Breadcrumb from '@/components/breadcrumb';
 
 type Props = { params: { lang: string; slug?: string } };
@@ -27,40 +26,64 @@ export default async function PracticesPage({ params }: Props) {
 
   return (
     <>
-      <PageHero>
-        <h1 className="text-3xl sm:text-4xl font-bold">{dict.menu.practices}</h1>
-      </PageHero>
+      {/* Dark hero banner */}
+      <section className="relative bg-navy-900 grain overflow-hidden">
+        <div className="section-wide py-24 sm:py-32 flex flex-col items-center text-center">
+          <p className="text-xs tracking-[0.25em] uppercase text-gold font-body mb-4">
+            PRACTICE AREAS
+          </p>
+          <h1 className="font-display text-display-lg text-white">
+            {dict.menu.practices}
+          </h1>
+          <div className="gold-line-center mt-6" />
+        </div>
+      </section>
 
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="max-w-6xl mx-auto px-4 lg:px-12 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {practices.items.map((practice: any) => {
-            const fields = practice.fields;
-            const slug = fields.slug as string;
-            const title = fields.title as string;
-            const introduction = (fields.introduction as string) ?? '';
-            const excerpt =
-              introduction.length > 200
-                ? introduction.slice(0, 200) + '...'
-                : introduction;
+      {/* Practice cards */}
+      <section className="bg-warm-50 section-padding">
+        <div className="section-wide">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-0">
+            {practices.items.map((practice: any, index: number) => {
+              const fields = practice.fields;
+              const slug = fields.slug as string;
+              const title = fields.title as string;
+              const introduction = (fields.introduction as string) ?? '';
+              const excerpt =
+                introduction.length > 200
+                  ? introduction.slice(0, 200) + '...'
+                  : introduction;
 
-            return (
-              <div
-                key={practice.sys.id}
-                className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-              >
-                <h2 className="text-xl font-semibold mb-3">{title}</h2>
-                <p className="text-gray-600 mb-4 leading-relaxed">{excerpt}</p>
+              return (
                 <Link
+                  key={practice.sys.id}
                   href={getPath(lang, 'practiceDetail', slug)}
-                  className="text-primary font-medium hover:underline"
+                  className="group block py-8 border-b border-navy-900/10"
                 >
-                  {dict.homepage.link_text} &rarr;
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <h2 className="font-display text-display-sm text-navy-800 group-hover:text-gold transition-colors mb-3">
+                        {title}
+                      </h2>
+                      <p className="text-navy-600/70 font-body leading-relaxed">
+                        {excerpt}
+                      </p>
+                    </div>
+                    <svg
+                      className="mt-1 w-5 h-5 shrink-0 text-gold opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
                 </Link>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
     </>

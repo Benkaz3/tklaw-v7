@@ -6,7 +6,6 @@ import { getPath } from '@/lib/i18n';
 import { getEntry } from '@/lib/contentful';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import PageHero from '@/components/page-hero';
 import Breadcrumb from '@/components/breadcrumb';
 
 type Props = { params: { lang: string; slug?: string } };
@@ -79,96 +78,128 @@ export default async function AttorneyProfilePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
 
-      <PageHero>
-        <h1 className="text-3xl sm:text-4xl font-bold">{name}</h1>
-        {title && <p className="text-lg mt-2 opacity-90">{title}</p>}
-      </PageHero>
+      {/* Dark hero banner */}
+      <section className="relative bg-navy-900 grain section-padding pb-16">
+        <div className="section-wide text-center">
+          <p className="text-xs tracking-[0.2em] uppercase text-gold/80 font-body mb-3">
+            OUR PEOPLE
+          </p>
+          <h1 className="font-display text-display-lg text-white">{name}</h1>
+          {title && (
+            <p className="text-warm-300/60 mt-3 text-lg font-body">{title}</p>
+          )}
+          <div className="gold-line-center mt-6" />
+        </div>
+      </section>
 
       <Breadcrumb items={breadcrumbItems} />
 
-      <article className="max-w-4xl mx-auto px-4 lg:px-12 py-12">
-        <div className="flex flex-col md:flex-row gap-8 mb-10">
-          {photoUrl && (
-            <div className="shrink-0">
-              <Image
-                src={photoUrl.startsWith('//') ? `https:${photoUrl}` : photoUrl}
-                alt={name}
-                width={240}
-                height={320}
-                className="rounded-lg object-cover"
-              />
-            </div>
-          )}
-          <div>
-            <h2 className="text-2xl font-bold mb-1">{name}</h2>
-            {title && <p className="text-gray-600 mb-4">{title}</p>}
-
-            {introduction && (
-              <section className="mb-6">
-                <h3 className="text-lg font-semibold mb-2">{labels.introduction}</h3>
-                {introduction.split('\n').map((p: string, i: number) => (
-                  <p key={i} className="text-gray-700 mb-2 leading-relaxed">
-                    {p}
-                  </p>
-                ))}
-              </section>
+      {/* Profile content */}
+      <article className="bg-warm-50 section-padding">
+        <div className="section-narrow">
+          {/* Top section: photo + intro */}
+          <div className="flex flex-col md:flex-row gap-10 mb-16">
+            {photoUrl && (
+              <div className="shrink-0">
+                <div className="relative w-60 h-80 overflow-hidden rounded-lg border-2 border-navy-800/10">
+                  <Image
+                    src={photoUrl.startsWith('//') ? `https:${photoUrl}` : photoUrl}
+                    alt={name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
             )}
+            <div>
+              <h2 className="font-display text-display-sm text-navy-900 mb-1">{name}</h2>
+              {title && (
+                <p className="text-navy-600 font-body mb-6">{title}</p>
+              )}
+
+              {introduction && (
+                <div>
+                  <h3 className="font-display text-xl text-navy-900 mb-3">{labels.introduction}</h3>
+                  <div className="gold-line mb-4" />
+                  {introduction.split('\n').map((p: string, i: number) => (
+                    <p key={i} className="text-navy-600 font-body mb-3 leading-relaxed">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Detail sections */}
+          {areasOfPractice && areasOfPractice.length > 0 && (
+            <section className="mb-12">
+              <h3 className="font-display text-xl text-navy-900 mb-3">
+                {labels.areas_of_practice}
+              </h3>
+              <div className="gold-line mb-6" />
+              <ul className="space-y-2">
+                {areasOfPractice.map((area: string, i: number) => (
+                  <li key={i} className="flex items-start gap-3 text-navy-600 font-body">
+                    <span className="mt-2 block w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                    {area}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {educationLines.length > 0 && (
+            <section className="mb-12">
+              <h3 className="font-display text-xl text-navy-900 mb-3">
+                {labels.education}
+              </h3>
+              <div className="gold-line mb-6" />
+              <ul className="space-y-2">
+                {educationLines.map((line: string, i: number) => (
+                  <li key={i} className="flex items-start gap-3 text-navy-600 font-body">
+                    <span className="mt-2 block w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {workExperience && workExperience.length > 0 && (
+            <section className="mb-12">
+              <h3 className="font-display text-xl text-navy-900 mb-3">
+                {labels.work_experience}
+              </h3>
+              <div className="gold-line mb-6" />
+              <ul className="space-y-2">
+                {workExperience.map((item: string, i: number) => (
+                  <li key={i} className="flex items-start gap-3 text-navy-600 font-body">
+                    <span className="mt-2 block w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {professionalAssociations && professionalAssociations.length > 0 && (
+            <section className="mb-12">
+              <h3 className="font-display text-xl text-navy-900 mb-3">
+                {labels.professional_associations}
+              </h3>
+              <div className="gold-line mb-6" />
+              <ul className="space-y-2">
+                {professionalAssociations.map((assoc: string, i: number) => (
+                  <li key={i} className="flex items-start gap-3 text-navy-600 font-body">
+                    <span className="mt-2 block w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                    {assoc}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
-
-        {areasOfPractice && areasOfPractice.length > 0 && (
-          <section className="mb-8">
-            <h3 className="text-xl font-semibold mb-3">{labels.areas_of_practice}</h3>
-            <ul className="list-disc ml-6 space-y-1">
-              {areasOfPractice.map((area: string, i: number) => (
-                <li key={i} className="text-gray-700">
-                  {area}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {educationLines.length > 0 && (
-          <section className="mb-8">
-            <h3 className="text-xl font-semibold mb-3">{labels.education}</h3>
-            <ul className="list-disc ml-6 space-y-1">
-              {educationLines.map((line: string, i: number) => (
-                <li key={i} className="text-gray-700">
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {workExperience && workExperience.length > 0 && (
-          <section className="mb-8">
-            <h3 className="text-xl font-semibold mb-3">{labels.work_experience}</h3>
-            <ul className="list-disc ml-6 space-y-1">
-              {workExperience.map((item: string, i: number) => (
-                <li key={i} className="text-gray-700">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {professionalAssociations && professionalAssociations.length > 0 && (
-          <section className="mb-8">
-            <h3 className="text-xl font-semibold mb-3">
-              {labels.professional_associations}
-            </h3>
-            <ul className="list-disc ml-6 space-y-1">
-              {professionalAssociations.map((assoc: string, i: number) => (
-                <li key={i} className="text-gray-700">
-                  {assoc}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
       </article>
     </>
   );

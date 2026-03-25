@@ -6,7 +6,6 @@ import { getPath } from '@/lib/i18n';
 import { getEntries, getEntry } from '@/lib/contentful';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import PageHero from '@/components/page-hero';
 import Breadcrumb from '@/components/breadcrumb';
 
 type Props = { params: { lang: string; slug?: string } };
@@ -50,46 +49,69 @@ export default async function BlogCategoryPage({ params }: Props) {
 
   return (
     <>
-      <PageHero>
-        <h1 className="text-3xl sm:text-4xl font-bold">{categoryName}</h1>
-      </PageHero>
+      {/* Dark Hero Banner */}
+      <section className="bg-navy-900 grain section-padding">
+        <div className="section-narrow text-center">
+          <p className="text-xs tracking-[0.2em] uppercase text-gold font-body mb-4">
+            INSIGHTS
+          </p>
+          <h1 className="font-display text-display-lg text-white">
+            {categoryName}
+          </h1>
+          <div className="gold-line-center mt-6" />
+        </div>
+      </section>
 
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="max-w-6xl mx-auto px-4 lg:px-12 py-12">
-        {posts.items.length === 0 ? (
-          <p className="text-gray-500 text-center">
-            {dict.global.labels.post_not_found}
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {posts.items.map((post: any) => {
-              const fields = post.fields;
-              const postSlug = fields.slug as string;
-              const title = fields.title as string;
-              const date = new Date(post.sys.createdAt).toLocaleDateString(
-                lang === 'vi' ? 'vi-VN' : 'en-US',
-                { year: 'numeric', month: 'long', day: 'numeric' },
-              );
+      {/* Blog Grid */}
+      <section className="bg-warm-50 section-padding">
+        <div className="section-wide">
+          {posts.items.length === 0 ? (
+            <p className="text-muted text-center font-body">
+              {dict.global.labels.post_not_found}
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {posts.items.map((post: any) => {
+                const fields = post.fields;
+                const postSlug = fields.slug as string;
+                const title = fields.title as string;
+                const date = new Date(post.sys.createdAt).toLocaleDateString(
+                  lang === 'vi' ? 'vi-VN' : 'en-US',
+                  { year: 'numeric', month: 'long', day: 'numeric' },
+                );
 
-              return (
-                <div
-                  key={post.sys.id}
-                  className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-                >
-                  <p className="text-sm text-gray-500 mb-2">{date}</p>
-                  <h2 className="text-lg font-semibold mb-3">{title}</h2>
+                return (
                   <Link
+                    key={post.sys.id}
                     href={getPath(lang, 'blogPost', postSlug)}
-                    className="text-primary font-medium hover:underline text-sm"
+                    className="group"
                   >
-                    {dict.global.labels.read_more}
+                    {/* Gold top bar */}
+                    <div className="h-1 bg-gold/0 group-hover:bg-gold transition-colors" />
+
+                    {/* Content */}
+                    <div className="py-6">
+                      <time className="text-xs text-muted font-body uppercase tracking-wide">
+                        {date}
+                      </time>
+                      <h2 className="font-display text-xl text-navy-900 mt-3 group-hover:text-gold transition-colors leading-snug">
+                        {title}
+                      </h2>
+                      <span className="mt-4 inline-flex items-center text-sm text-gold font-body font-medium">
+                        {dict.global.labels.read_more} &rarr;
+                      </span>
+                    </div>
+
+                    {/* Bottom border */}
+                    <div className="border-b border-navy-900/10 pb-8" />
                   </Link>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </div>
       </section>
     </>
   );

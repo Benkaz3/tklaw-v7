@@ -28,10 +28,20 @@ export default async function PoliciesPage({ params }: Props) {
 
   if (!entry) {
     return (
-      <div className="container mx-auto px-4 py-10 text-center">
+      <>
+        <section className="relative bg-navy-900 grain section-padding pb-16">
+          <div className="section-wide text-center">
+            <h1 className="font-display text-display-lg text-white">
+              {dict.menu.policies}
+            </h1>
+            <div className="gold-line-center mt-6" />
+          </div>
+        </section>
         <Breadcrumb items={breadcrumbItems} />
-        <p className="text-muted">Policy not found</p>
-      </div>
+        <div className="bg-warm-50 section-padding text-center">
+          <p className="text-muted font-body">Policy not found</p>
+        </div>
+      </>
     );
   }
 
@@ -39,26 +49,34 @@ export default async function PoliciesPage({ params }: Props) {
   const updated = entry.sys.updatedAt;
 
   return (
-    <main className="container mx-auto px-4 max-w-3xl py-10">
-      <Breadcrumb items={breadcrumbItems} />
-
-      <article className="bg-white border border-gray-200 rounded-lg shadow" itemScope itemType="https://schema.org/WebPage">
-        <header className="px-6 pt-8 pb-2">
-          <h1 className="font-bold text-3xl sm:text-4xl leading-snug" itemProp="name">
+    <>
+      {/* Dark hero banner */}
+      <section className="relative bg-navy-900 grain section-padding pb-16">
+        <div className="section-wide text-center">
+          <h1 className="font-display text-display-lg text-white" itemProp="name">
             {title}
           </h1>
           {updated && (
-            <div className="text-muted text-sm mt-2">
+            <p className="text-warm-300/60 mt-3 text-sm font-body">
               <time dateTime={new Date(updated).toISOString()}>
                 {new Date(updated).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US')}
               </time>
-            </div>
+            </p>
           )}
-        </header>
-        <div className="px-6 pb-8 prose max-w-none">
-          {body ? documentToReactComponents(body, richTextOptions) : null}
+          <div className="gold-line-center mt-6" />
         </div>
-      </article>
-    </main>
+      </section>
+
+      <Breadcrumb items={breadcrumbItems} />
+
+      {/* Article content */}
+      <main className="bg-warm-50 section-padding" itemScope itemType="https://schema.org/WebPage">
+        <article className="section-narrow">
+          <div className="prose prose-lg max-w-none font-body text-navy-700 prose-headings:font-display prose-headings:text-navy-900 prose-a:text-gold prose-a:no-underline hover:prose-a:underline prose-strong:text-navy-900">
+            {body ? documentToReactComponents(body, richTextOptions) : null}
+          </div>
+        </article>
+      </main>
+    </>
   );
 }

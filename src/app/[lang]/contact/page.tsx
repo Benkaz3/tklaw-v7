@@ -3,7 +3,6 @@ import type { Locale } from '@/lib/i18n';
 import { getDictionary } from '@/lib/dictionary';
 import { buildMetadata } from '@/lib/metadata';
 import { getPath } from '@/lib/i18n';
-import PageHero from '@/components/page-hero';
 import Breadcrumb from '@/components/breadcrumb';
 
 type Props = { params: { lang: string } };
@@ -37,46 +36,105 @@ export default async function ContactPage({ params }: Props) {
 
   return (
     <>
-      <PageHero>
-        <h1 className="relative z-10 text-white font-bold text-center">
-          {dict.menu.contact}
-        </h1>
-      </PageHero>
+      {/* Dark hero banner */}
+      <section className="relative bg-navy-900 grain section-padding pb-16">
+        <div className="section-wide text-center">
+          <p className="text-xs tracking-[0.2em] uppercase text-gold/80 font-body mb-3">
+            GET IN TOUCH
+          </p>
+          <h1 className="font-display text-display-lg text-white">
+            {dict.menu.contact}
+          </h1>
+          <div className="gold-line-center mt-6" />
+        </div>
+      </section>
+
       <Breadcrumb items={breadcrumbItems} />
 
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="font-semibold mb-2">{dict.global.labels.office_address_label}</h3>
-            <p className="text-muted">{dict.global.office_address}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="font-semibold mb-2">{dict.global.labels.phone_label}</h3>
-            <a href={`tel:${dict.global.phone.replace(/\s/g, '')}`} className="text-primary hover:underline">
-              {dict.global.phone}
-            </a>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="font-semibold mb-2">{dict.global.labels.email_label}</h3>
-            <a href={`mailto:${dict.global.email}`} className="text-primary hover:underline">
-              {dict.global.email}
-            </a>
-          </div>
-        </div>
+      {/* Contact details */}
+      <section className="bg-warm-50 section-padding">
+        <div className="section-wide">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            {/* Left column - address */}
+            <div>
+              <p className="text-xs tracking-[0.2em] uppercase text-gold font-body mb-2">
+                {dict.global.labels.office_address_label}
+              </p>
+              <h2 className="font-display text-display-sm text-navy-900 mb-4">
+                {dict.businessInfo.name}
+              </h2>
+              <div className="gold-line mb-8" />
 
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <iframe
-            src={dict.businessInfo.mapEmbedUrl}
-            width="100%"
-            height="400"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title={dict.global.labels.map_iframe_title}
-          />
+              <address className="font-body text-navy-600 leading-relaxed not-italic text-lg">
+                {dict.global.office_address}
+              </address>
+
+              {dict.businessInfo.mapLink && (
+                <a
+                  href={dict.businessInfo.mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-block text-gold text-sm font-body hover:underline tracking-wide"
+                >
+                  {dict.global.labels.view_on_map_label || 'View on map'} &rarr;
+                </a>
+              )}
+            </div>
+
+            {/* Right column - phone, email, hours */}
+            <div className="space-y-8">
+              <div>
+                <p className="text-xs tracking-[0.2em] uppercase text-muted font-body mb-1">
+                  {dict.global.labels.phone_label}
+                </p>
+                <a
+                  href={`tel:${dict.global.phone.replace(/\s/g, '')}`}
+                  className="font-display text-xl text-navy-900 hover:text-gold transition-colors"
+                >
+                  {dict.global.phone}
+                </a>
+              </div>
+
+              <div>
+                <p className="text-xs tracking-[0.2em] uppercase text-muted font-body mb-1">
+                  {dict.global.labels.email_label}
+                </p>
+                <a
+                  href={`mailto:${dict.global.email}`}
+                  className="font-display text-xl text-navy-900 hover:text-gold transition-colors"
+                >
+                  {dict.global.email}
+                </a>
+              </div>
+
+              {dict.businessInfo.officeHours && (
+                <div>
+                  <p className="text-xs tracking-[0.2em] uppercase text-muted font-body mb-1">
+                    OFFICE HOURS
+                  </p>
+                  <p className="font-display text-xl text-navy-900">
+                    {dict.businessInfo.officeHours}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Map */}
+      <section className="bg-navy-900">
+        <iframe
+          src={dict.businessInfo.mapEmbedUrl}
+          width="100%"
+          height="450"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title={dict.global.labels.map_iframe_title}
+        />
+      </section>
 
       <script
         type="application/ld+json"

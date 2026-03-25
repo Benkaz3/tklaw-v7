@@ -7,7 +7,6 @@ import { getEntries } from '@/lib/contentful';
 import { richTextToPlainText } from '@/lib/rich-text';
 import Link from 'next/link';
 import Image from 'next/image';
-import PageHero from '@/components/page-hero';
 import Breadcrumb from '@/components/breadcrumb';
 
 type Props = { params: { lang: string; slug?: string } };
@@ -32,77 +31,100 @@ export default async function BlogPage({ params }: Props) {
 
   return (
     <>
-      <PageHero>
-        <h1 className="text-3xl sm:text-4xl font-bold">{dict.menu.blog}</h1>
-      </PageHero>
+      {/* Dark Hero Banner */}
+      <section className="bg-navy-900 grain section-padding">
+        <div className="section-narrow text-center">
+          <p className="text-xs tracking-[0.2em] uppercase text-gold font-body mb-4">
+            INSIGHTS
+          </p>
+          <h1 className="font-display text-display-lg text-white">
+            {dict.menu.blog}
+          </h1>
+          <div className="gold-line-center mt-6" />
+        </div>
+      </section>
 
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="max-w-6xl mx-auto px-4 lg:px-12 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {posts.items.map((post: any) => {
-            const fields = post.fields;
-            const slug = fields.slug as string;
-            const title = fields.title as string;
-            const body = fields.body;
-            const plainText = richTextToPlainText(body);
-            const excerpt =
-              plainText.length > 300
-                ? plainText.slice(0, 300) + '...'
-                : plainText;
-            const date = new Date(post.sys.createdAt).toLocaleDateString(
-              lang === 'vi' ? 'vi-VN' : 'en-US',
-              { year: 'numeric', month: 'long', day: 'numeric' },
-            );
-            const author = fields.author as any;
-            const authorName = author?.fields?.name as string | undefined;
-            const authorPhoto = author?.fields?.photo?.fields?.file?.url as
-              | string
-              | undefined;
+      {/* Blog Grid */}
+      <section className="bg-warm-50 section-padding">
+        <div className="section-wide">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {posts.items.map((post: any) => {
+              const fields = post.fields;
+              const slug = fields.slug as string;
+              const title = fields.title as string;
+              const body = fields.body;
+              const plainText = richTextToPlainText(body);
+              const excerpt =
+                plainText.length > 300
+                  ? plainText.slice(0, 300) + '...'
+                  : plainText;
+              const date = new Date(post.sys.createdAt).toLocaleDateString(
+                lang === 'vi' ? 'vi-VN' : 'en-US',
+                { year: 'numeric', month: 'long', day: 'numeric' },
+              );
+              const author = fields.author as any;
+              const authorName = author?.fields?.name as string | undefined;
+              const authorPhoto = author?.fields?.photo?.fields?.file?.url as
+                | string
+                | undefined;
 
-            return (
-              <div
-                key={post.sys.id}
-                className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <div className="p-6">
-                  <p className="text-sm text-gray-500 mb-2">{date}</p>
-                  <h2 className="text-lg font-semibold mb-3">{title}</h2>
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                    {excerpt}
-                  </p>
+              return (
+                <Link
+                  key={post.sys.id}
+                  href={getPath(lang, 'blogPost', slug)}
+                  className="group"
+                >
+                  {/* Gold top bar */}
+                  <div className="h-1 bg-gold/0 group-hover:bg-gold transition-colors" />
 
-                  {author && (
-                    <div className="flex items-center gap-3 mb-4">
-                      {authorPhoto && (
-                        <Image
-                          src={
-                            authorPhoto.startsWith('//')
-                              ? `https:${authorPhoto}`
-                              : authorPhoto
-                          }
-                          alt={authorName ?? ''}
-                          width={32}
-                          height={32}
-                          className="rounded-full object-cover"
-                        />
-                      )}
-                      {authorName && (
-                        <span className="text-sm text-gray-700">{authorName}</span>
-                      )}
-                    </div>
-                  )}
+                  {/* Content */}
+                  <div className="py-6">
+                    <time className="text-xs text-muted font-body uppercase tracking-wide">
+                      {date}
+                    </time>
+                    <h2 className="font-display text-xl text-navy-900 mt-3 group-hover:text-gold transition-colors leading-snug">
+                      {title}
+                    </h2>
+                    <p className="text-sm text-navy-600/70 mt-3 leading-relaxed font-body line-clamp-4">
+                      {excerpt}
+                    </p>
 
-                  <Link
-                    href={getPath(lang, 'blogPost', slug)}
-                    className="text-primary font-medium hover:underline text-sm"
-                  >
-                    {dict.global.labels.read_more}
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
+                    {author && (
+                      <div className="flex items-center gap-3 mt-4">
+                        {authorPhoto && (
+                          <Image
+                            src={
+                              authorPhoto.startsWith('//')
+                                ? `https:${authorPhoto}`
+                                : authorPhoto
+                            }
+                            alt={authorName ?? ''}
+                            width={28}
+                            height={28}
+                            className="rounded-full object-cover"
+                          />
+                        )}
+                        {authorName && (
+                          <span className="text-xs text-navy-600 font-body">
+                            {authorName}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    <span className="mt-4 inline-flex items-center text-sm text-gold font-body font-medium">
+                      {dict.global.labels.read_more} &rarr;
+                    </span>
+                  </div>
+
+                  {/* Bottom border */}
+                  <div className="border-b border-navy-900/10 pb-8" />
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
     </>
