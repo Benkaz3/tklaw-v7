@@ -18,40 +18,72 @@ export default async function BlogSection({ lang, dict }: BlogSectionProps) {
   });
 
   return (
-    <section className="py-16 px-4 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-12">
-        {dict.homepage.blog_section.title}
-      </h2>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {entries.items.map((entry: any) => {
-          const { title, slug, body } = entry.fields;
-          const date = new Date(entry.sys.createdAt).toLocaleDateString(
-            lang === 'vi' ? 'vi-VN' : 'en-US',
-            { year: 'numeric', month: 'long', day: 'numeric' },
-          );
-          const excerpt = richTextToPlainText(body).slice(0, 300);
-
-          return (
-            <article
-              key={entry.sys.id}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition"
+    <section className="bg-warm-50 section-padding">
+      <div className="section-wide">
+        {/* Header */}
+        <div className="flex justify-between items-end mb-16">
+          <div>
+            <p className="text-xs tracking-[0.2em] uppercase text-gold font-body mb-2">
+              INSIGHTS
+            </p>
+            <h2 className="font-display text-display-md text-navy-900">
+              {dict.homepage.blog_section.title}
+            </h2>
+            <div className="gold-line mt-4" />
+          </div>
+          <div className="hidden sm:block">
+            <Link
+              href={getPath(lang, 'blog')}
+              className="text-sm font-body text-navy-600 hover:text-gold transition-colors"
             >
-              <time className="text-sm text-gray-500 mb-2 block">{date}</time>
-              <h3 className="text-xl font-semibold mb-3">{title}</h3>
-              <p className="text-gray-600 mb-4">
-                {excerpt}
-                {excerpt.length >= 300 && '...'}
-              </p>
+              {dict.global.labels.blog_label} &rarr;
+            </Link>
+          </div>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {entries.items.map((entry: any) => {
+            const { title, slug, body } = entry.fields;
+            const date = new Date(entry.sys.createdAt).toLocaleDateString(
+              lang === 'vi' ? 'vi-VN' : 'en-US',
+              { year: 'numeric', month: 'long', day: 'numeric' },
+            );
+            const plainText = richTextToPlainText(body);
+            const excerpt = plainText.slice(0, 200);
+
+            return (
               <Link
+                key={entry.sys.id}
                 href={getPath(lang, 'blogPost', slug)}
-                className="text-primary font-medium hover:underline"
+                className="group"
               >
-                {dict.global.labels.read_more}
+                {/* Gold top bar */}
+                <div className="h-1 bg-gold/0 group-hover:bg-gold transition-colors" />
+
+                {/* Content */}
+                <div className="py-6">
+                  <time className="text-xs text-muted font-body uppercase tracking-wide">
+                    {date}
+                  </time>
+                  <h3 className="font-display text-xl text-navy-900 mt-3 group-hover:text-gold transition-colors leading-snug">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-navy-600/70 mt-3 leading-relaxed font-body line-clamp-3">
+                    {excerpt}
+                    {plainText.length > 200 && '...'}
+                  </p>
+                  <span className="mt-4 inline-flex items-center text-sm text-gold font-body font-medium">
+                    {dict.global.labels.read_more} &rarr;
+                  </span>
+                </div>
+
+                {/* Bottom border */}
+                <div className="border-b border-navy-900/10 pb-8" />
               </Link>
-            </article>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import BlogSection from '@/components/sections/blog-section';
 import TeamSection from '@/components/sections/team-section';
 import ContactSection from '@/components/sections/contact-section';
 import FAQSection from '@/components/sections/faq-section';
+import TestimonialsSection from '@/components/sections/testimonials-section';
 
 type Props = { params: { lang: string } };
 
@@ -24,9 +25,10 @@ export default async function HomePage({ params }: Props) {
     <>
       <HeroSection lang={lang} dict={dict} />
       <PracticesSection lang={lang} dict={dict} />
+      <TestimonialsSection dict={dict} />
       <CTASection lang={lang} dict={dict} />
-      <BlogSection lang={lang} dict={dict} />
       <TeamSection lang={lang} dict={dict} />
+      <BlogSection lang={lang} dict={dict} />
       <ContactSection lang={lang} dict={dict} />
       <FAQSection dict={dict} />
     </>

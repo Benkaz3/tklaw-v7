@@ -10,68 +10,78 @@ interface TeamSectionProps {
   dict: Dictionary;
 }
 
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+function getInitial(name: string): string {
+  return name.charAt(0).toUpperCase();
 }
 
 export default async function TeamSection({ lang, dict }: TeamSectionProps) {
   const entries = await getEntries('author', { locale: lang });
-  const count = entries.items.length;
-
-  const gridCols =
-    count <= 1
-      ? 'grid-cols-1'
-      : count === 2
-        ? 'grid-cols-1 sm:grid-cols-2'
-        : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
 
   return (
-    <section className="py-16 px-4 max-w-7xl mx-auto">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">
-          {dict.homepage.our_team_section.title}
-        </h2>
-        <p className="text-lg text-gray-600">
-          {dict.homepage.our_team_section.subtitle}
-        </p>
-      </div>
+    <section className="bg-navy-900 grain section-padding text-white">
+      <div className="section-wide">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <p className="text-xs tracking-[0.2em] uppercase text-gold/80 font-body mb-2">
+            OUR PEOPLE
+          </p>
+          <h2 className="font-display text-display-md text-white">
+            {dict.homepage.our_team_section.title}
+          </h2>
+          <p className="text-warm-300/60 mt-3 font-body">
+            {dict.homepage.our_team_section.subtitle}
+          </p>
+          <div className="gold-line-center mt-6" />
+        </div>
 
-      <div className={`grid ${gridCols} gap-8 justify-items-center`}>
-        {entries.items.map((entry: any) => {
-          const { name, slug, title, photo } = entry.fields;
-          const photoUrl = photo?.fields?.file?.url;
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {entries.items.map((entry: any) => {
+            const { name, slug, title, photo } = entry.fields;
+            const photoUrl = photo?.fields?.file?.url;
 
-          return (
-            <div key={entry.sys.id} className="text-center">
-              {photoUrl ? (
-                <Image
-                  src={photoUrl.startsWith('//') ? `https:${photoUrl}` : photoUrl}
-                  alt={name}
-                  width={120}
-                  height={120}
-                  className="rounded-full mx-auto mb-4 object-cover w-[120px] h-[120px]"
-                />
-              ) : (
-                <div className="w-[120px] h-[120px] rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl font-bold mx-auto mb-4">
-                  {getInitials(name)}
-                </div>
-              )}
-              <h3 className="text-xl font-semibold">{name}</h3>
-              {title && <p className="text-gray-600 mb-2">{title}</p>}
-              <Link
-                href={getPath(lang, 'attorneyProfile', slug)}
-                className="text-primary font-medium hover:underline"
+            return (
+              <div
+                key={entry.sys.id}
+                className="group relative overflow-hidden rounded-lg bg-navy-800 border border-transparent group-hover:border-gold/20 transition-colors"
               >
-                {dict.homepage.our_team_section.link_text}
-              </Link>
-            </div>
-          );
-        })}
+                {/* Photo area */}
+                <div className="relative h-72 bg-gradient-to-br from-navy-700 to-navy-600">
+                  {photoUrl ? (
+                    <Image
+                      src={photoUrl.startsWith('//') ? `https:${photoUrl}` : photoUrl}
+                      alt={name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="font-display text-6xl text-gold/10">
+                        {getInitial(name)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Info bar */}
+                <div className="p-6">
+                  <h3 className="font-display text-xl text-white group-hover:text-gold transition-colors">
+                    {name}
+                  </h3>
+                  {title && (
+                    <p className="text-warm-300/60 text-sm mt-1 font-body">{title}</p>
+                  )}
+                  <Link
+                    href={getPath(lang, 'attorneyProfile', slug)}
+                    className="mt-3 inline-block text-gold text-sm font-body tracking-wide"
+                  >
+                    {dict.homepage.our_team_section.link_text} &rarr;
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

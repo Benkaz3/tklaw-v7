@@ -16,28 +16,58 @@ export default async function PracticesSection({ lang, dict }: PracticesSectionP
   });
 
   return (
-    <section className="py-16 px-4 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-12">
-        {dict.homepage.practices_section.title}
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {entries.items.map((entry: any) => {
-          const { title, slug, homepageDescription } = entry.fields;
-
-          return (
+    <section className="bg-warm-50 section-padding">
+      <div className="section-wide">
+        {/* Header */}
+        <div className="flex justify-between items-end mb-16">
+          <div>
+            <p className="text-xs tracking-[0.2em] uppercase text-gold font-body mb-2">
+              EXPERTISE
+            </p>
+            <h2 className="font-display text-display-md text-navy-900">
+              {dict.homepage.practices_section.title}
+            </h2>
+            <div className="gold-line mt-4" />
+          </div>
+          <div className="hidden sm:block">
             <Link
-              key={entry.sys.id}
-              href={getPath(lang, 'practiceDetail', slug)}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition"
+              href={getPath(lang, 'practices')}
+              className="text-sm font-body text-navy-600 hover:text-gold transition-colors"
             >
-              <h3 className="text-lg font-semibold mb-2">{title}</h3>
-              {homepageDescription && (
-                <p className="text-sm text-gray-600">{homepageDescription}</p>
-              )}
+              {dict.homepage.practices_section.title} &rarr;
             </Link>
-          );
-        })}
+          </div>
+        </div>
+
+        {/* Practice list */}
+        <div>
+          {entries.items.map((entry: any, index: number) => {
+            const { title, slug } = entry.fields;
+
+            return (
+              <Link
+                key={entry.sys.id}
+                href={getPath(lang, 'practiceDetail', slug)}
+                className={`group flex justify-between items-center py-6 border-b border-navy-900/10 ${
+                  index === 0 ? 'border-t' : ''
+                }`}
+              >
+                <span className="font-display text-display-sm text-navy-800 group-hover:text-gold transition-colors">
+                  {title}
+                </span>
+                <svg
+                  className="w-6 h-6 transform group-hover:translate-x-2 transition-transform text-gold opacity-0 group-hover:opacity-100"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

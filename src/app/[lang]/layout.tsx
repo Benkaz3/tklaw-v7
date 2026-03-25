@@ -22,7 +22,7 @@ export default async function LangLayout({
     <html lang={lang}>
       <body className="min-h-screen flex flex-col">
         <Navbar lang={lang as Locale} dict={dict} />
-        <main className="flex-1 pt-[72px]">{children}</main>
+        <main className="flex-1">{children}</main>
         <Footer lang={lang as Locale} dict={dict} />
       </body>
     </html>

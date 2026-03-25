@@ -12,18 +12,34 @@ export default function CtaSection({ lang, dict }: CtaSectionProps) {
   const cta = dict.homepage.cta_section;
 
   return (
-    <section className="bg-linear-primary-secondary text-white py-16 px-4">
+    <section className="bg-navy-900 grain section-padding">
       <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl mb-4">
+        {/* Gold line */}
+        <div className="gold-line-center mb-8" />
+
+        {/* Heading */}
+        <h2 className="font-display text-display-lg text-white">
           {cta.title}{' '}
-          <span className="font-bold">{cta.highlight_title}</span>
+          <em className="text-gold not-italic">{cta.highlight_title}</em>
         </h2>
 
-        <p className="text-lg opacity-90 mb-8">{cta.subtitle}</p>
+        {/* Subtitle */}
+        <p className="text-warm-300/70 mt-4 text-lg font-body">
+          {cta.subtitle}
+        </p>
 
+        {/* Phone number */}
+        <a
+          href={`tel:${dict.businessInfo.hotline.replace(/\s/g, '')}`}
+          className="mt-8 block text-gold text-display-md font-display font-bold hover:text-gold-light transition-colors"
+        >
+          {dict.businessInfo.hotline}
+        </a>
+
+        {/* CTA button */}
         <Link
           href={getPath(lang, 'contact')}
-          className="bg-white text-primary px-6 py-3 rounded font-semibold inline-block"
+          className="mt-6 inline-block bg-gold text-navy-900 font-body font-semibold text-sm tracking-wide uppercase px-8 py-4 hover:bg-gold-light transition-colors"
         >
           {cta.button_text}
         </Link>
