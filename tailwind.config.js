@@ -22,7 +22,7 @@ export default {
         photoBg: "#D9D9D9", // light grey for headshot background
         whyUsBg: "#464646",
         linkActive: "#d1beb0",
-        linkHover: "",
+        linkHover: "#a89485",
       },
 
       fontFamily: {
@@ -59,11 +59,11 @@ export default {
         "radial-primary-accent": "radial-gradient(#3e4f7a, #668ae5)",
         "radial-secondary-accent": "radial-gradient(#95aadf, #668ae5)",
       },
-    },
-    animation: {
-      bounce: "bounce 0.6s infinite alternate",
-      "bounce-200": "bounce 0.6s infinite 0.2s alternate",
-      "bounce-400": "bounce 0.6s infinite 0.4s alternate",
+      animation: {
+        bounce: "bounce 0.6s infinite alternate",
+        "bounce-200": "bounce 0.6s infinite 0.2s alternate",
+        "bounce-400": "bounce 0.6s infinite 0.4s alternate",
+      },
     },
   },
   plugins: [],

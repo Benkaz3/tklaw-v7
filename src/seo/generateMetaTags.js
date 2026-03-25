@@ -46,7 +46,7 @@ const generateMetaTags = (seo) => {
       },
       {
         name: 'twitter:creator',
-        content: seo.twitterCreator || '@YourTwitterHandle',
+        content: seo.twitterCreator || '@TKLawVN',
       },
       {
         name: 'twitter:title',

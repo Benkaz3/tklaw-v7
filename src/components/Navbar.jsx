@@ -60,7 +60,8 @@ const Navbar = () => {
             <button
               onClick={toggleMenu}
               className="block lg:hidden focus:outline-none transition-transform duration-200 transform hover:scale-110"
-              aria-label="Toggle Menu"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
             >
               {isOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
             </button>

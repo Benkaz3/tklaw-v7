@@ -7,25 +7,7 @@ import heroBg from '../assets/practices_hero_bg.webp'
 import { Helmet } from 'react-helmet-async';
 import useSeo from '../seo/useSeo';
 import generateMetaTags from '../seo/generateMetaTags';
-
-const convertRichTextToString = (richTextNode) => {
-  if (!richTextNode?.content) return ''
-  return richTextNode.content
-    .map((node) => {
-      if (!node) return ''
-      switch (node.nodeType) {
-        case 'paragraph':
-          return convertRichTextToString(node)
-        case 'text':
-          return node.value || ''
-        case 'hyperlink':
-          return (node.content || []).map((linkNode) => linkNode.value || '').join('')
-        default:
-          return ''
-      }
-    })
-    .join('')
-}
+import convertRichTextToString from '../utils/richText';
 
 const BlogPage = () => {
   const { t, i18n } = useTranslation()

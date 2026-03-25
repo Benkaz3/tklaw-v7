@@ -34,7 +34,12 @@ const PracticesAndSectorsPage = () => {
       </div>
     )
   }
-  if (error) return null
+  if (error)
+    return (
+      <div className='text-red-500 text-center py-10 mt-32'>
+        {t('global.errors.load_error', { defaultValue: 'Error loading content', message: error.message })}
+      </div>
+    )
 
   // only practices
   const practices = data?.practice?.filter((item) => item.fields.isPractice) || []
@@ -72,18 +77,21 @@ const PracticesAndSectorsPage = () => {
             const isExpanded = expandedRow === item.sys.id
             return (
               <div key={item.sys.id}>
-                <div
-                  className={`flex justify-between items-center p-4 cursor-pointer ${
+                <button
+                  type="button"
+                  className={`flex w-full justify-between items-center p-4 cursor-pointer ${
                     isExpanded ? 'bg-gray-100' : 'bg-white'
                   }`}
                   onClick={() => toggleRow(item.sys.id)}
+                  aria-expanded={isExpanded}
+                  aria-controls={`practice-${item.sys.id}`}
                 >
                   <p className="font-semibold">{item.fields.title}</p>
-                  <span className=" font-semibold">{isExpanded ? '–' : '+'}</span>
-                </div>
+                  <span className="font-semibold" aria-hidden="true">{isExpanded ? '–' : '+'}</span>
+                </button>
 
                 {isExpanded && (
-                  <div className="p-4 bg-gray-50">
+                  <div id={`practice-${item.sys.id}`} className="p-4 bg-gray-50">
                     <p className="mb-2">{item.fields.introduction}</p>
                     <Link to={pagePath.replace(':slug', item.fields.slug)}>
                       <button className="font-semibold text-primary hover:text-secondary">

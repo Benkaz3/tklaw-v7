@@ -3,26 +3,7 @@ import useContentful from '../useContentful';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import LoadingDots from './LoadingDots';
-
-// Helper function to convert rich text to string
-const convertRichTextToString = (richTextNode) => {
-  if (!richTextNode?.content?.length) return '';
-
-  return richTextNode.content
-    .map((node) => {
-      switch (node.nodeType) {
-        case 'paragraph':
-          return convertRichTextToString(node);
-        case 'text':
-          return node.value;
-        case 'hyperlink':
-          return node.content.map((linkNode) => linkNode.value).join('');
-        default:
-          return '';
-      }
-    })
-    .join(' ');
-};
+import convertRichTextToString from '../utils/richText';
 
 // Helper function to generate localized paths
 const generatePath = (language, type, slug) => {

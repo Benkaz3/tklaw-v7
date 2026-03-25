@@ -19,8 +19,6 @@ import AuthorProfile from './pages/AuthorProfile';
 import BlogCategoryPage from './pages/BlogCategoryPage';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { SeoProvider } from './seo/SeoContext';
-
 function App() {
   useEffect(() => {
     AOS.init({
@@ -30,13 +28,12 @@ function App() {
   }, []);
 
   return (
-    <SeoProvider>
-      <Router>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path='/' element={<Navigate replace to='/vi' />} />
-            <Route path='/en' element={<HomePage />} />
-            <Route path='/vi' element={<HomePage />} />
+    <Router>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path='/' element={<Navigate replace to='/vi' />} />
+          <Route path='/en' element={<HomePage />} />
+          <Route path='/vi' element={<HomePage />} />
             <Route
               path='/vi/linh-vuc-hanh-nghe/:slug'
               element={<PracticeDetailsPage />}
@@ -77,7 +74,6 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </SeoProvider>
   );
 }
 

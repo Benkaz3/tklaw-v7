@@ -1,21 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  h1               { @apply text-3xl; }
-  h2               { @apply text-2xl; }
+  /* default (mobile) */
+  h1               { @apply text-2xl; }
+  h2               { @apply text-xl; }
   h3               { @apply text-xl; }
   h4               { @apply text-lg; }
   p                { @apply text-base; }
   small, .caption  { @apply text-xs; }
-}
-@layer base {
-  /* default (mobile) */
-  h1 { @apply text-2xl; }
-  h2 { @apply text-xl; }
-  p  { @apply text-base; }
 
   /* ≥640px */
   @screen sm {

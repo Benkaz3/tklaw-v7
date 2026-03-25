@@ -53,7 +53,7 @@ const useSeo = (pageKey) => {
       : 'https://www.tklaw.vn/en',
     ogType: 'website',
     twitterCard: 'summary_large_image',
-    twitterCreator: '@YourTwitterHandle',
+    twitterCreator: '@TKLawVN',
     twitterTitle: language === 'vi' 
       ? 'Văn Phòng Luật Sư TK & Liên Danh - Giải Pháp Pháp Lý Ưu Việt Tại TP HCM' 
       : 'TK & Associates Law Office - Superior Legal Solutions in HCMC',
