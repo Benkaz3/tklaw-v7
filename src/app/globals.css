@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Georgia";
+  src: url("/fonts/georgia.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@layer base {
+  h1 { @apply text-2xl; }
+  h2 { @apply text-xl; }
+  h3 { @apply text-xl; }
+  h4 { @apply text-lg; }
+  p  { @apply text-base; }
+  small, .caption { @apply text-xs; }
+
+  @screen sm {
+    h1 { @apply text-3xl; }
+    h2 { @apply text-2xl; }
+    p  { @apply text-lg; }
+  }
+  @screen md {
+    h1 { @apply text-4xl; }
+    h2 { @apply text-3xl; }
+    p  { @apply text-xl; }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f6f7f9;
+  color: #080909;
+  font-family: "Noto Serif", serif;
+}
+
+h1, h2, h3 {
+  font-family: "Noto Serif", serif;
+  color: #1a1a1a;
+}
+
+.text-gradient {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
