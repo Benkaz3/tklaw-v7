@@ -3,19 +3,13 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import LoadingDots from '../components/LoadingDots'
 import useContentful from '../useContentful'
-import heroBg from '../assets/practices_hero_bg.webp'
-import Breadcrumb from '../components/Breadcrumb'
-import { Helmet } from 'react-helmet-async'
-import useSeo from '../seo/useSeo'
+import PageSeo from '../components/PageSeo'
+import PageHero from '../components/PageHero'
+import { getPath } from '../config/routes'
 
 const PracticesAndSectorsPage = () => {
   const { t, i18n } = useTranslation()
   const language = i18n.language
-
-  const pagePath =
-    language === 'vi'
-      ? '/vi/linh-vuc-hanh-nghe/:slug'
-      : '/en/practices/:slug'
 
   const { data, loading, error } = useContentful([
     {
@@ -25,7 +19,6 @@ const PracticesAndSectorsPage = () => {
     },
   ])
 
-  const seo = useSeo('Practices')
   const [expandedRow, setExpandedRow] = useState(null)
   if (loading) {
     return (
@@ -50,20 +43,8 @@ const PracticesAndSectorsPage = () => {
 
   return (
     <section>
-      <Helmet>
-        <title>{seo.Title}</title>
-        <meta name="description" content={seo.Description} />
-        <meta name="keywords" content={seo.Keywords.join(', ')} />
-      </Helmet>
-
-      <section
-        className="relative h-80 bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: `url(${heroBg})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50" />
-      </section>
-
-      <Breadcrumb />
+      <PageSeo pageKey="Practices" />
+      <PageHero />
 
       <div className="max-w-container-desktop mx-auto px-4 mt-8">
         {t('homepage.practices_and_sectors_title') && (
@@ -93,7 +74,7 @@ const PracticesAndSectorsPage = () => {
                 {isExpanded && (
                   <div id={`practice-${item.sys.id}`} className="p-4 bg-gray-50">
                     <p className="mb-2">{item.fields.introduction}</p>
-                    <Link to={pagePath.replace(':slug', item.fields.slug)}>
+                    <Link to={getPath(language, 'practiceDetail', item.fields.slug)}>
                       <button className="font-semibold text-primary hover:text-secondary">
                         {t('homepage.link_text')}
                       </button>

@@ -1,13 +1,12 @@
 // src/pages/ContactPage.jsx
 
 import { useTranslation } from 'react-i18next'
-import Breadcrumb from '../components/Breadcrumb'
 import LoadingDots from '../components/LoadingDots'
-import heroBg from '../assets/practices_hero_bg.webp'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import useSeo from '../seo/useSeo'
-import generateMetaTags from '../seo/generateMetaTags'
+import PageSeo from '../components/PageSeo'
+import PageHero from '../components/PageHero'
 
 const ContactPage = () => {
   const { t, i18n } = useTranslation()
@@ -15,7 +14,6 @@ const ContactPage = () => {
   const [mapLoading, setMapLoading] = useState(true)
 
   const seo = useSeo('ContactPage')
-  const metaTags = generateMetaTags(seo)
   const homeUrl = language === 'vi'
     ? 'https://www.tklaw.vn/'
     : 'https://www.tklaw.vn/en'
@@ -68,17 +66,8 @@ const ContactPage = () => {
 
   return (
     <div>
+      <PageSeo pageKey="ContactPage" />
       <Helmet>
-        <title>{seo.Title}</title>
-        <link rel="canonical" href={seo.ogUrl} />
-        <link rel="alternate" href={homeUrl} hreflang="vi" />
-        <link rel="alternate" href={`${homeUrl}en`} hreflang="en" />
-        <meta name="robots" content="index, follow" />
-        {metaTags.map((tag, i) =>
-          tag.name
-            ? <meta key={i} name={tag.name} content={tag.content} />
-            : <meta key={i} property={tag.property} content={tag.content} />
-        )}
         <script type="application/ld+json">
           {JSON.stringify(localBusinessSchema)}
         </script>
@@ -87,14 +76,7 @@ const ContactPage = () => {
         </script>
       </Helmet>
 
-      {/* Hero */}
-      <section
-        className="relative h-80 bg-cover bg-center flex items-center justify-center"
-        role="img"
-        aria-label={t('global.labels.contact_hero_alt')}
-        style={{ backgroundImage: `url(${heroBg})` }}
-      />
-  <Breadcrumb />
+      <PageHero ariaLabel={t('global.labels.contact_hero_alt')} />
 
       <div className="container mx-auto max-w-desktop px-4">
         {/* Main heading */}

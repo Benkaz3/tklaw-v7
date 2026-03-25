@@ -1,17 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getPath } from '../config/routes';
 
 const HeroSection = () => {
   const { t, i18n } = useTranslation();
   const language = i18n.language || 'en';
-
-  const getDynamicPath = (path) => {
-    const paths = {
-      contact: language === 'vi' ? '/vi/lien-he' : '/en/contact',
-      attorneys: language === 'vi' ? '/vi/luat-su' : '/en/attorneys',
-    };
-    return paths[path] || '/';
-  };
 
   const titles = Array.isArray(t('homepage.hero.title', { returnObjects: true }))
   ? t('homepage.hero.title', { returnObjects: true })
@@ -24,7 +17,7 @@ const HeroSection = () => {
   const buttons = [
     {
       key: 'primary',
-      to: getDynamicPath('contact'),
+      to: getPath(language, 'contact'),
       text: t('homepage.hero.button_text'),
       ariaLabel: t('homepage.hero.button_text'),
       classes:
@@ -32,7 +25,7 @@ const HeroSection = () => {
     },
     {
       key: 'secondary',
-      to: getDynamicPath('attorneys'),
+      to: getPath(language, 'attorneys'),
       text: t('homepage.hero.meet_the_team', { defaultValue: 'Meet the Team' }),
       ariaLabel: t('homepage.hero.meet_team_text'),
       classes:
@@ -69,7 +62,7 @@ const HeroSection = () => {
               className={classes}
               aria-label={ariaLabel}
             >
-              <p className="capitalize">{text}</p>
+              <span className="capitalize">{text}</span>
             </Link>
           ))}
         </div>

@@ -1,7 +1,9 @@
-import React, { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { getPath } from '../config/routes';
+import ErrorBoundary from './ErrorBoundary';
 
 
 const ContactDetail = ({ label, value, href, type }) => {
@@ -39,13 +41,7 @@ ContactDetail.defaultProps = {
 const ContactCard = ({ title, address, phone, email, language }) => {
   const { t } = useTranslation();
 
-  const mapRoute = useMemo(() => {
-    const routes = {
-      vi: '/vi/lien-he',
-      en: '/en/contact',
-    };
-    return routes[language] || '/en/contact'; 
-  }, [language]);
+  const mapRoute = getPath(language, 'contact');
 
   return (
     <div className="w-full md:w-3/4 lg:w-2/3 bg-card_background p-4 md:p-6 rounded-lg mx-auto transition-transform transform hover:scale-105">
@@ -100,40 +96,6 @@ ContactCard.defaultProps = {
   address: '',
   phone: '',
   email: '',
-};
-
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(/* error */) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, info) {
-    console.error('ErrorBoundary caught an error', error, info);
-  }
-
-  render() {
-    const { hasError } = this.state;
-    const { fallback, children } = this.props;
-    if (hasError) {
-      return fallback || <div className="text-red-500">Something went wrong.</div>;
-    }
-
-    return children;
-  }
-}
-
-ErrorBoundary.propTypes = {
-  fallback: PropTypes.node,
-  children: PropTypes.node.isRequired,
-};
-
-ErrorBoundary.defaultProps = {
-  fallback: null,
 };
 
 const ContactSection = () => {

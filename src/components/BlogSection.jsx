@@ -4,19 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import LoadingDots from './LoadingDots';
 import convertRichTextToString from '../utils/richText';
-
-// Helper function to generate localized paths
-const generatePath = (language, type, slug) => {
-  const basePath = language === 'vi' ? `/vi` : `/en`;
-  switch (type) {
-    case 'blog':
-      return `${basePath}/blog/${slug}`;
-    case 'attorney':
-      return language === 'vi' ? `${basePath}/luat-su/${slug}` : `${basePath}/attorneys/${slug}`;
-    default:
-      return '#';
-  }
-};
+import { getPath } from '../config/routes';
 
 // BlogPost Component
 const BlogPost = React.memo(({ post, language, previewLength }) => {
@@ -39,7 +27,7 @@ const BlogPost = React.memo(({ post, language, previewLength }) => {
 
   return (
     <div className="p-6 bg-section_background border rounded-md shadow-sm hover:shadow-md transition-shadow duration-300">
-      <Link to={generatePath(language, 'blog', fields?.slug)} className="hover:underline">
+      <Link to={getPath(language, 'blogPost', fields?.slug)} className="hover:underline">
         <h4 className="font-semibold mb-2 text-primary">{fields?.title || t('global.untitled')}</h4>
       </Link>
       <div className="flex flex-wrap items-center text-gray-500 mb-4">
@@ -63,7 +51,7 @@ const BlogPost = React.memo(({ post, language, previewLength }) => {
                     )}
                     {slug ? (
                       <Link
-                        to={generatePath(language, 'attorney', slug)}
+                        to={getPath(language, 'attorneyProfile', slug)}
                         className="text-gray-500 font-bold uppercase hover:underline"
                       >
                         <span className='text-sm'>{name || t('global.unknown_author')}</span>
@@ -82,7 +70,7 @@ const BlogPost = React.memo(({ post, language, previewLength }) => {
         <span>{formattedDate}</span>
       </div>
       <p className="mb-4 text-gray-700">{previewText}</p>
-      <Link to={generatePath(language, 'blog', fields?.slug)} className="flex items-center text-primary hover:underline">
+      <Link to={getPath(language, 'blogPost', fields?.slug)} className="flex items-center text-primary hover:underline">
         <p className="mr-1">{t('global.labels.read_more')}</p>
       </Link>
     </div>

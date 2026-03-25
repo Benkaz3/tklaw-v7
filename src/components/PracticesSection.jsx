@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import LoadingDots from './LoadingDots';
 import useContentful from '../useContentful';
+import { getPath } from '../config/routes';
 
 const PracticeCard = ({ id, slug, title, description, url }) => (
   <Link
@@ -25,14 +25,6 @@ const PracticeCard = ({ id, slug, title, description, url }) => (
 const PracticesSection = () => {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
-
-  const practicePath = useMemo(
-    () =>
-      language === 'vi'
-        ? '/vi/linh-vuc-hanh-nghe/:slug'
-        : '/en/practices/:slug',
-    [language]
-  );
 
   const { data, loading, error } = useContentful([
     {
@@ -75,7 +67,7 @@ const PracticesSection = () => {
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
             {practices.map(({ sys: { id }, fields }) => {
               const { slug, title, homepageDescription } = fields;
-              const url = practicePath.replace(':slug', slug);
+              const url = getPath(language, 'practiceDetail', slug);
 
               return (
                 <PracticeCard

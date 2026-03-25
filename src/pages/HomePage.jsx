@@ -4,9 +4,7 @@ import CTASection from '../components/CTASection';
 import BlogSection from '../components/BlogSection';
 import ContactSection from '../components/ContactSection';
 import FAQSection from '../components/FAQs';
-import { Helmet } from 'react-helmet-async';
-import useSeo from '../seo/useSeo';
-import generateMetaTags from '../seo/generateMetaTags';
+import PageSeo from '../components/PageSeo';
 
 const sections = [
   HeroSection,
@@ -18,23 +16,9 @@ const sections = [
 ];
 
 function HomePage() {
-  const seo = useSeo('HomePage');
-
-  const metaTags = generateMetaTags(seo);
-
   return (
     <>
-   <Helmet>
-        <title>{seo.Title}</title>
-        <link rel="canonical" href={seo.ogUrl} />
-        {metaTags.map((tag, index) =>
-          tag.name ? (
-            <meta key={index} name={tag.name} content={tag.content} />
-          ) : (
-            <meta key={index} property={tag.property} content={tag.content} />
-          )
-        )}
-      </Helmet>
+      <PageSeo pageKey="HomePage" />
 
       {sections.map((Section, index) => (
         <Section key={index} data-aos="fade-up" />

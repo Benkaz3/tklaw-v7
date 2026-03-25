@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import LoadingDots from '../components/LoadingDots'
 import useContentful from '../useContentful'
-import Breadcrumb from '../components/Breadcrumb'
-import heroBg from '../assets/practices_hero_bg.webp'
+import PageSeo from '../components/PageSeo'
+import PageHero from '../components/PageHero'
 
 const PracticeDetailsPage = () => {
   const { slug } = useParams()
@@ -83,19 +83,12 @@ const PracticeDetailsPage = () => {
 
   return (
     <section className="bg-background mt-16">
-      {/* Hero Section */}
-      <section
-        className="relative h-80 bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: `url(${heroBg})` }}
-        aria-label={t('practice_details_page.hero_background')}
-      >
-        <div className="absolute inset-0 bg-black opacity-50" aria-hidden="true" />
+      <PageSeo pageKey="PracticeDetailsPage" />
+      <PageHero ariaLabel={t('practice_details_page.hero_background')}>
         <h2 className="sr-only">
           {t('practice_details_page.hero_title')}
         </h2>
-      </section>
-
-      <Breadcrumb />
+      </PageHero>
 
       <div className="max-w-container-desktop mx-auto px-4 mt-4">
         <h1 className="font-primary text-start font-semibold mb-6 text-text">

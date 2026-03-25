@@ -1,17 +1,11 @@
-import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
 import useContentful from '../useContentful'
 import LoadingDots from '../components/LoadingDots'
-import Breadcrumb from '../components/Breadcrumb'
-import generateMetaTags from '../seo/generateMetaTags'
-import useSeo from '../seo/useSeo'
-import heroBg from '../assets/practices_hero_bg.webp'
+import PageSeo from '../components/PageSeo'
+import PageHero from '../components/PageHero'
 
 const AuthorProfile = () => {
-  const seo = useSeo('AuthorProfilePage')
-  const metaTags = generateMetaTags(seo)
   const { slug } = useParams()
   const { t, i18n } = useTranslation()
   const language = i18n.language
@@ -64,25 +58,10 @@ const AuthorProfile = () => {
 
   return (
     <main className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-      <Helmet>
-        <title>{seo?.Title || name}</title>
-        {Array.isArray(metaTags) &&
-          metaTags.map((meta, i) =>
-            meta && typeof meta === 'object' ? <meta key={i} {...meta} /> : null
-          )}
-        {seo?.ogUrl && <link rel="canonical" href={seo.ogUrl} />}
-      </Helmet>
-
-      <header
-        className="relative w-full h-56 sm:h-64 md:h-72 lg:h-80 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBg})` }}
-        aria-label={t('practice_details_page.hero_background')}
-      >
-        <div className="absolute inset-0 bg-black opacity-40" />
+      <PageSeo pageKey="AuthorProfilePage" />
+      <PageHero ariaLabel={t('practice_details_page.hero_background')}>
         <h1 className="sr-only">{name}</h1>
-      </header>
-
-      <Breadcrumb attorneyName={name} />
+      </PageHero>
 
       <article
         className="bg-white border border-gray-200 rounded-lg shadow divide-y divide-gray-200 overflow-hidden"

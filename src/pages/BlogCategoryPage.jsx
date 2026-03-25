@@ -4,16 +4,12 @@ import { Link } from 'react-router-dom'
 import useContentful from '../useContentful'
 import LoadingDots from '../components/LoadingDots'
 import Breadcrumb from '../components/Breadcrumb'
-import { Helmet } from 'react-helmet-async'
-import useSeo from '../seo/useSeo'
-import generateMetaTags from '../seo/generateMetaTags'
+import PageSeo from '../components/PageSeo'
+import { getPath } from '../config/routes'
 
 const CategoryPage = () => {
   const { t, i18n } = useTranslation()
   const language = i18n.language
-  const seo = useSeo('BlogCategoryPage')
-  const metaTags = generateMetaTags(seo)
-
   const { slug } = useParams()
   const {
     data: categoryDataResult,
@@ -67,17 +63,7 @@ const CategoryPage = () => {
 
   return (
     <div className='container mx-auto mt-32'>
-      <Helmet>
-        <title>{seo.Title}</title>
-        <link rel="canonical" href={seo.ogUrl} />
-        {metaTags.map((tag, index) =>
-          tag.name ? (
-            <meta key={index} name={tag.name} content={tag.content} />
-          ) : (
-            <meta key={index} property={tag.property} content={tag.content} />
-          )
-        )}
-      </Helmet>
+      <PageSeo pageKey="BlogCategoryPage" />
       <Breadcrumb />
       <h1 className='font-bold mb-8'>{category.fields.name}</h1>
       <div className='space-y-8'>
@@ -89,7 +75,7 @@ const CategoryPage = () => {
                 {fields.body?.content?.[0]?.content?.[0]?.value || t('global.errors.no_content', { defaultValue: 'No content available' })}
               </p>
               <Link
-                to={`/${language}/blog/${fields.slug}`}
+                to={getPath(language, 'blogPost', fields.slug)}
                 className='text-primary hover:underline font-semibold'
               >
                 {t('global.labels.read_more')}

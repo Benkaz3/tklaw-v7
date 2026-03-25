@@ -1,35 +1,31 @@
 import { FaFacebook} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getPath } from '../config/routes';
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
   const language = i18n.language || 'en';
 
   const menuItems = [
-    { key: 'contact', path: 'contact' },
-    { key: 'attorneys', path: 'attorneys' },
-    { key: 'policies', path: 'policies' },
-    { key: 'practices', path: 'practices_and_sectors' },
+    { key: 'contact', routeKey: 'contact' },
+    { key: 'attorneys', routeKey: 'attorneys' },
+    { key: 'policies', routeKey: 'policies' },
+    { key: 'practices', routeKey: 'practices' },
   ];
 
   const socialMedia = [
     { icon: FaFacebook, url: 'https://www.facebook.com', label: 'Facebook' },
   ];
 
-  const getDynamicPath = (path) => {
-    const basePath = t(`menu.path.${path}`, { defaultValue: '' });
-    return `/${language}${basePath ? `/${basePath}` : ''}`;
-  };
-
   return (
     <footer className="py-8 px-4 lg:px-12 mt-12 relative z-10">
       <div className="container mx-auto flex flex-col items-start space-y-4">
         <div className="flex flex-wrap items-start gap-6">
-          {menuItems.map(({ key, path }) => (
+          {menuItems.map(({ key, routeKey }) => (
             <Link
               key={key}
-              to={getDynamicPath(path)}
+              to={getPath(language, routeKey)}
               className="hover:text-accent transition duration-300"
             >
               {t(`menu.${key}`)}

@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import LangSwitcher from './LangSwitcher'
 import logo from '../assets/logo-v6.png'
@@ -8,6 +8,11 @@ import logo from '../assets/logo-v6.png'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { t, i18n } = useTranslation()
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
   const language = i18n.language || 'en'
   const toggleMenu = useCallback(() => setIsOpen(prev => !prev), [])
   const getDynamicPath = useCallback(
@@ -89,7 +94,6 @@ const Navbar = () => {
                 <Link
                   key={key}
                   to={getDynamicPath(key)}
-                  onClick={toggleMenu}
                   className="font-bold transition-colors duration-300 hover:text-accent"
                 >
                   {t(`menu.${key}`)}

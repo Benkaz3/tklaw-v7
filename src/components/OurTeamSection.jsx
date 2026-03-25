@@ -2,6 +2,7 @@ import useContentful from '../useContentful'
 import LoadingDots from './LoadingDots'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { getPath } from '../config/routes'
 
 const OurTeamSection = () => {
   const { t, i18n } = useTranslation()
@@ -90,11 +91,7 @@ const OurTeamSection = () => {
 
                   {/* Profile Link */}
                   <Link
-                    to={
-                      language === 'vi'
-                        ? `/vi/luat-su/${slug}`
-                        : `/en/attorneys/${slug}`
-                    }
+                    to={getPath(language, 'attorneyProfile', slug)}
                     className="underline-animation text-primary font-medium"
                   >
                     {t('homepage.our_team_section.link_text')}

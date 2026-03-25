@@ -1,7 +1,7 @@
 {
   "name": "tklaw",
   "private": true,
-  "version": "0.0.0",
+  "version": "7.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,12 +12,10 @@
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.0.0",
     "@contentful/rich-text-types": "^17.0.0",
-    "@radix-ui/react-primitive": "^2.0.0",
     "aos": "^2.3.4",
     "contentful": "^11.4.3",
     "i18next": "^23.15.2",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.451.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-country-flag": "^3.1.0",

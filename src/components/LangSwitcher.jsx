@@ -1,5 +1,5 @@
 // src/components/LangSwitcher.jsx
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa';
@@ -47,6 +47,17 @@ const LangSwitcher = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem('preferredLanguage');
@@ -55,11 +66,6 @@ const LangSwitcher = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const isBlogPost = useMemo(() => {
-    const p = location.pathname.toLowerCase();
-    return p.startsWith('/vi/blog') || p.startsWith('/en/blog');
-  }, [location.pathname]);
 
   const toggleDropdown = useCallback(() => {
     setIsDropdownOpen((v) => !v);
@@ -124,10 +130,8 @@ const LangSwitcher = () => {
     [i18n, location.pathname, navigate, mapStaticPath, maybeBuildPracticeUrl]
   );
 
-  if (isBlogPost) return null;
-
   return (
-    <div className='relative inline-block text-left'>
+    <div ref={dropdownRef} className='relative inline-block text-left'>
       <button
         onClick={toggleDropdown}
         className='flex items-center px-3 py-2 focus:outline-none text-black bg-white hover:bg-background rounded-sm transition duration-200'

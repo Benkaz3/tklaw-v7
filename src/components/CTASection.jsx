@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getPath } from '../config/routes';
 
 const CTASection = () => {
   const { t, i18n } = useTranslation();
   const language = i18n.language || 'en';
 
-  const contactPath = language.startsWith('vi') ? '/vi/lien-he' : '/en/contact';
+  const contactPath = getPath(language, 'contact');
 
   return (
     <section className="py-16">
@@ -22,7 +23,7 @@ const CTASection = () => {
           className="relative inline-flex items-center justify-center uppercase text-white font-medium py-3 px-6 w-full sm:w-fit transition duration-300 bg-primary rounded shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           aria-label={t('homepage.cta_section.button_text')}
         >
-          <p className="uppercase">{t('homepage.cta_section.button_text')}</p>
+          <span className="uppercase">{t('homepage.cta_section.button_text')}</span>
         </Link>
       </div>
     </section>
