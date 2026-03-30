@@ -15,21 +15,11 @@ interface NavbarProps {
 
 export default function Navbar({ lang, dict }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navLinks = [
     { label: dict.menu.attorneys, href: getPath(lang, 'attorneys') },
@@ -41,164 +31,109 @@ export default function Navbar({ lang, dict }: NavbarProps) {
   const switchLabel = lang === 'vi' ? 'EN' : 'VI';
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 h-[80px] transition-all duration-300 ${
-        scrolled
-          ? 'bg-white shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-5 lg:px-12 h-full flex items-center justify-between">
-        {/* Left: Logo + Firm name */}
-        <Link href={getPath(lang, 'home')} className="flex items-center gap-3">
-          <Image
-            src="/tklaw.png"
-            alt={dict.logo.alt}
-            width={36}
-            height={36}
-            className="flex-shrink-0"
-          />
-          <span
-            className={`font-display text-sm tracking-wide uppercase transition-all duration-300 ${
-              scrolled ? 'text-navy-900' : 'text-white'
-            }`}
-          >
-            TK &amp; Associates
-          </span>
-        </Link>
+    <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        {/* Top bar: Logo | Office Name | Lang + Burger */}
+        <div className="relative flex items-center justify-between py-2">
+          {/* Logo */}
+          <Link href={getPath(lang, 'home')} className="flex-none">
+            <Image
+              src="/images/logo-v6.png"
+              alt={dict.logo.alt}
+              title={dict.logo.title}
+              width={56}
+              height={56}
+              className="h-14 w-auto object-contain"
+            />
+          </Link>
 
-        {/* Center: Desktop nav links */}
-        <div className="hidden md:flex items-center gap-8">
+          {/* Centered office name */}
+          <h2 className="text-center whitespace-nowrap text-primary font-bold pointer-events-none text-base sm:text-lg md:text-xl lg:text-2xl">
+            {(dict.navbar.office_name as string[]).map((line, i) => (
+              <span key={i} className="block md:inline">
+                {line}
+              </span>
+            ))}
+          </h2>
+
+          {/* Lang switcher + burger */}
+          <div className="flex items-center space-x-4">
+            <Link
+              href={switchLang}
+              className="flex items-center px-3 py-2 text-black bg-white hover:bg-gray-100 rounded-sm transition duration-200"
+            >
+              {/* Flag icon */}
+              <Image
+                src={lang === 'vi' ? '/images/flag-vn.svg' : '/images/flag-us.svg'}
+                alt={switchLabel}
+                width={24}
+                height={16}
+                className="inline-block"
+              />
+              <svg className="ml-2 w-3 h-3" fill="currentColor" viewBox="0 0 10 6">
+                <path d="M0 0l5 6 5-6z" />
+              </svg>
+            </Link>
+            <button
+              type="button"
+              onClick={() => setIsOpen((prev) => !prev)}
+              className="block lg:hidden focus:outline-none transition-transform duration-200 transform hover:scale-110"
+              aria-label="Toggle menu"
+              aria-expanded={isOpen}
+            >
+              <svg
+                className="w-7 h-7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                {isOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop nav links */}
+        <div className="hidden lg:flex justify-center space-x-6 border-t border-gray-200 py-2 max-w-max mx-auto">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`font-body text-sm font-medium tracking-wide uppercase transition-all duration-300 ${
-                scrolled
-                  ? 'text-navy-700 hover:text-gold'
-                  : 'text-white/80 hover:text-gold'
-              }`}
+              className="transition-colors duration-300 hover:text-gold"
             >
               {link.label}
             </Link>
           ))}
         </div>
-
-        {/* Right side */}
-        <div className="flex items-center gap-5">
-          {/* Phone number — desktop only */}
-          <a
-            href="tel:+84913777995"
-            className={`hidden md:flex items-center gap-2 font-body text-sm font-medium tracking-wide transition-all duration-300 ${
-              scrolled ? 'text-gold-dark' : 'text-gold'
-            }`}
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-              />
-            </svg>
-            091 377 7995
-          </a>
-
-          {/* Language switcher */}
-          <Link
-            href={switchLang}
-            className={`font-body text-xs tracking-widest uppercase font-medium transition-all duration-300 ${
-              scrolled
-                ? 'text-navy-700 hover:text-gold'
-                : 'text-white/80 hover:text-gold'
-            }`}
-          >
-            {switchLabel}
-          </Link>
-
-          {/* Mobile hamburger */}
-          <button
-            type="button"
-            onClick={() => setIsOpen((prev) => !prev)}
-            className={`md:hidden transition-all duration-300 ${
-              scrolled ? 'text-navy-900' : 'text-white'
-            }`}
-            aria-label="Toggle menu"
-            aria-expanded={isOpen}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              {isOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
       </div>
 
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden bg-navy-900 overflow-hidden transition-all duration-300 ${
-          isOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="flex flex-col px-6 py-8 space-y-5">
-          {navLinks.map((link) => (
+      {/* Mobile dropdown */}
+      {isOpen && (
+        <div className="lg:hidden bg-white text-black overflow-hidden transition-transform duration-300 ease-in-out">
+          <div className="flex flex-col items-center space-y-4 py-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="font-bold transition-colors duration-300 hover:text-accent"
+              >
+                {link.label}
+              </Link>
+            ))}
             <Link
-              key={link.href}
-              href={link.href}
-              className="text-lg text-white font-body font-medium tracking-wide hover:text-gold transition-all duration-300 border-b border-gold/20 pb-3"
+              href={getPath(lang, 'contact')}
+              className="font-bold transition-colors duration-300 hover:text-accent"
             >
-              {link.label}
+              {dict.menu.contact}
             </Link>
-          ))}
-          <Link
-            href={getPath(lang, 'contact')}
-            className="text-lg text-white font-body font-medium tracking-wide hover:text-gold transition-all duration-300 border-b border-gold/20 pb-3"
-          >
-            {dict.menu.contact}
-          </Link>
-          <a
-            href="tel:+84913777995"
-            className="flex items-center gap-2 text-gold font-body text-base font-medium pt-2"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-              />
-            </svg>
-            091 377 7995
-          </a>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }
