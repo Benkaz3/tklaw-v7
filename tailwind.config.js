@@ -1,69 +1,80 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: "class",
+module.exports = {
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        text: "#080909", // shade of black
-        background: "#f6f7f9", // tinted white/grey
-        primary: "#3E4F7A", // muted blue - logo
-        secondary: "#94a9df", // tinted blue
-        accent: "#668ae5", // shaded blue
-        shaded_accent: "#95AADF",
-        card_background: "#EEEFF2", // shaded pink/purple
-        section_background: "#E4E9F3", // shaded light grey/blue
-        highlight_card_background: "#D5D9E1", // darker light grey/blue
-
-        muted: "#7f7f7f", // Muted gray for less important text
-        buttonBg: "#3E4F7A", // Muted dark red for button background
-        navLinkAccent: "#be000c", // brighter red accent for navbar links
-        secondaryButtonBg: "#535353", // Gray for secondary button background
-        photoBg: "#D9D9D9", // light grey for headshot background
-        whyUsBg: "#464646",
-        linkActive: "#d1beb0",
-        linkHover: "",
+        // Core palette
+        navy: {
+          950: "#060B18",
+          900: "#0C1222",
+          800: "#131D35",
+          700: "#1B2A4A",
+          600: "#243660",
+        },
+        gold: {
+          DEFAULT: "#C8A951",
+          light: "#E8D5A3",
+          dark: "#A68B3C",
+          muted: "#BDA86E",
+        },
+        warm: {
+          50: "#FDFCFA",
+          100: "#FAF8F3",
+          200: "#F0EBE0",
+          300: "#E2D9C8",
+          400: "#C4B89E",
+        },
+        // Functional
+        muted: "#8B8B8B",
+        "section-alt": "#F4F2ED",
       },
-
       fontFamily: {
-        primary: ["Noto Serif", "serif"],
-        secondary: ["Georgia", "serif"],
-        logo: ["Georgia", "serif"],
+        display: ["Playfair Display", "Georgia", "serif"],
+        body: ["Inter", "system-ui", "sans-serif"],
+        serif: ["Noto Serif", "Georgia", "serif"],
       },
       fontSize: {
-        xs:   "0.694rem",
-        sm:   "0.833rem",
-        base: "1rem",
-        lg:   "1.2rem",
-        xl:   "1.44rem",
-        "2xl":  "1.728rem",
-        "3xl":  "2.074rem",
-      },
-      borderRadius: {
-        sm: "0.3125rem", // 5px
+        "display-xl": ["clamp(2.5rem, 5vw, 4.5rem)", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        "display-lg": ["clamp(2rem, 4vw, 3.5rem)", { lineHeight: "1.15", letterSpacing: "-0.02em" }],
+        "display-md": ["clamp(1.5rem, 3vw, 2.5rem)", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+        "display-sm": ["clamp(1.25rem, 2vw, 1.75rem)", { lineHeight: "1.3" }],
       },
       maxWidth: {
-        "container-desktop": "75rem", // 1200px
-        "container-tablet": "60rem", // 960px
+        "content": "75rem",
+        "narrow": "48rem",
       },
-      spacing: {
-        "section-margin": "2.5rem", // 40px
-        "card-padding": "1.25rem", // 20px
-        "button-padding": "0.625rem", // 10px
+      animation: {
+        "fade-up": "fadeUp 0.6s ease-out forwards",
+        "fade-in": "fadeIn 0.8s ease-out forwards",
+        "slide-in": "slideIn 0.5s ease-out forwards",
+        "pulse-slow": "pulse 4s ease-in-out infinite",
+        "float": "float 6s ease-in-out infinite",
+      },
+      keyframes: {
+        fadeUp: {
+          from: { opacity: "0", transform: "translateY(24px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeIn: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        slideIn: {
+          from: { opacity: "0", transform: "translateX(-16px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
       },
       backgroundImage: {
-        "linear-primary-secondary": "linear-gradient(#3e4f7a, #95aadf)",
-        "linear-primary-accent": "linear-gradient(#3e4f7a, #668ae5)",
-        "linear-secondary-accent": "linear-gradient(#95aadf, #668ae5)",
-        "radial-primary-secondary": "radial-gradient(#3e4f7a, #95aadf)",
-        "radial-primary-accent": "radial-gradient(#3e4f7a, #668ae5)",
-        "radial-secondary-accent": "radial-gradient(#95aadf, #668ae5)",
+        "gradient-radial": "radial-gradient(ellipse at center, var(--tw-gradient-stops))",
+        "gradient-hero": "linear-gradient(135deg, #060B18 0%, #1B2A4A 50%, #0C1222 100%)",
+        "gradient-gold": "linear-gradient(135deg, #C8A951 0%, #E8D5A3 100%)",
+        "gradient-dark": "linear-gradient(180deg, #0C1222 0%, #131D35 100%)",
       },
-    },
-    animation: {
-      bounce: "bounce 0.6s infinite alternate",
-      "bounce-200": "bounce 0.6s infinite 0.2s alternate",
-      "bounce-400": "bounce 0.6s infinite 0.4s alternate",
     },
   },
   plugins: [],

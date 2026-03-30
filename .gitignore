@@ -13,6 +13,7 @@ node_modules
 # Build Outputs
 dist
 dist-ssr
+.next
 *.local
 
 # Environment Variables
@@ -31,11 +32,11 @@ dist-ssr
 *.sw?
 
 # Internal reports and working files
-
 project_structure_report.md
 generate_project_report.py
 generate_website_content.js
 extractedContent.json
+report.txt
 
 # Migration plan
 migration
